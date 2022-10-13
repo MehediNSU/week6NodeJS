@@ -6,6 +6,8 @@ const PORT = 8000;
 
 const mongoose = require("mongoose");
 
+app.use(express.json());
+
 app.use("/users", userRouter);
 app.use("/note", noteRouter);
 
