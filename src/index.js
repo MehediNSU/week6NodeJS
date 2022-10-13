@@ -4,6 +4,8 @@ const noteRouter = require('./routes/noteRoutes');
 const app = express();
 const PORT = 8000;
 
+const mongoose = require("mongoose");
+
 app.use("/users", userRouter);
 app.use("/note", noteRouter);
 
@@ -11,9 +13,15 @@ app.get('/', (req, res) => {
     res.send("Hello BS23")
 })
 
-app.get('/test', (req, res) => {
-    res.send("This is test page")
-})
-app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-})
+mongoose
+    .connect(
+        'mongodb+srv://admin:admin1234@cluster26.2hetudh.mongodb.net/?retryWrites=true&w=majority'
+    )
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server started on port ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.log(error);
+    });
