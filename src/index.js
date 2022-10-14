@@ -2,28 +2,27 @@ const express = require('express');
 const userRouter = require('./routes/userRoutes');
 const noteRouter = require('./routes/noteRoutes');
 const app = express();
-const PORT = 8000;
+const cors = require("cors");
+
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, './.env') });
 
 const mongoose = require("mongoose");
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-    console.log("HTTP Method - " + req.method + " , URL - " + req.url);
-    next();
-});
+app.use(cors());
 
 app.use("/users", userRouter);
 app.use("/note", noteRouter);
 
 app.get('/', (req, res) => {
-    res.send("Hello BS23")
+    res.send("Notes API from MEHEDI")
 })
 
-mongoose
-    .connect(
-        'mongodb+srv://admin:admin1234@cluster26.2hetudh.mongodb.net/?retryWrites=true&w=majority'
-    )
+const PORT = process.env.PORT || 8000;
+
+mongoose.connect(process.env.MONGO_URL)
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
